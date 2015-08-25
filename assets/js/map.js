@@ -32,8 +32,6 @@ function geocodeAddress(geocoder) {
     postcode = document.getElementById('postcode').value;
     var fullAddress = address + ' ' + postcode;
 
-    locateAddressMarker(result);
-
     geocoder.geocode({'address': fullAddress}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
             var result = results[0].geometry.location;
