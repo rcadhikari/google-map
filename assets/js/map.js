@@ -5,15 +5,6 @@
  * Date: 25/08/2015 15:35
  */
 
-
-/*
- if (typeof jQuery != 'undefined') {
- alert("jQuery library is loaded!");
- }else{
- alert("jQuery library is not found!");
- }
- */
-
 // Set as a global variable;
 var marker;
 var address;
@@ -28,10 +19,34 @@ function initMap() {
 
     // Do the map work once
     document.getElementById('locate_on_map').addEventListener('click', function() {
-        geocodeAddress(geocoder, map);
+        geocodeAddress(geocoder);
     });
 }
 
+/**
+ * Function to manipulate the Google Map Locator
+ * @param geocoder object This is a geocoder object
+ */
+function geocodeAddress(geocoder) {
+    address = document.getElementById('address').value;
+    postcode = document.getElementById('postcode').value;
+    var fullAddress = address + ' ' + postcode;
+
+    locateAddressMarker(result);
+
+    geocoder.geocode({'address': fullAddress}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            var result = results[0].geometry.location;
+            locateAddressMarker(result);
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+/**
+ * @param result This is the object return by google api after the passing the address via api param.
+ */
 function locateAddressMarker(result)
 {
     // After searching the address, set the resulted latitude/longitude values into the text fields.
@@ -40,6 +55,7 @@ function locateAddressMarker(result)
 
     // Set Marker Character and Color;
     var marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|F7584C|000000"};
+    // Marker Address Information Variable
     var contentString = address + ' ' + postcode;
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -82,21 +98,4 @@ function toggleBounce() {
         // Set the timeout for marker bouncing
         setTimeout(function(){ marker.setAnimation(null); }, 750);
     }
-}
-
-function geocodeAddress(geocoder, resultsMap) {
-    address = document.getElementById('address').value;
-    postcode = document.getElementById('postcode').value;
-    var fullAddress = address + ' ' + postcode;
-
-    locateAddressMarker(result);
-
-    geocoder.geocode({'address': fullAddress}, function(results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-            var result = results[0].geometry.location;
-            locateAddressMarker(result);
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
 }
