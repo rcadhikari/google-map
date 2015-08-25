@@ -13,4 +13,3 @@
     <link rel="stylesheet" href="assets/css/map.css" type="text/css" />
 
     <a href="/" title="Create Google Marker">Home</a> - Welcome to Google Map manipulation <br/>
-    <p>&nbsp;</p>

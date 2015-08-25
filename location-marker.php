@@ -17,8 +17,7 @@
             </label>
         </div>
         <div class="controls">
-            <input type="text" id="address" name="address" value="" size="30" required="required">
-            <em> eg. Pokhara, Nepal</em>
+            <textarea id="address" name="address" value="" size="30" required="required">Pokhara Airport, Nagdhunga, Pokhara, Nepal</textarea>
         </div>
     </div>
     
@@ -29,7 +28,7 @@
             </label>
         </div>
         <div class="controls">
-            <input type="text" id="postcode" name="postcode" value="" size="30" required="required">
+            <input type="text" id="postcode" name="postcode" value="33700" size="30" required="required">
             <button type="button" class="btn btn-small btn-primary validate" id="locate_on_map" onclick="">Find</button>
         </div>
         <br/>
@@ -40,7 +39,8 @@
         Longitude: <input id="longitude" name="longitude" type="text" value="">
         <p>&nbsp;</p>
     </div>
-    
+
+    <span class="note-tips">Please drag and drop the marker to the correct position should your address/postcode not match the original placement.</span>
     <div id="map" class="" style="min-height: 500px;">Loading map...</div>
     
     <script src="assets/js/map.js" type="text/javascript"></script>

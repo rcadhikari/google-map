@@ -13,9 +13,12 @@ var postcode;
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
-        center: {lat: 28.216358639718297, lng: 83.94769437583 }
+        center: {lat: 28.2, lng: 83.98166700000002 }
     });
     var geocoder = new google.maps.Geocoder();
+
+    // Initial pre-population the marker on the map
+    geocodeAddress(geocoder);
 
     // Do the map work once
     document.getElementById('locate_on_map').addEventListener('click', function() {
@@ -52,9 +55,15 @@ function locateAddressMarker(result)
     document.getElementById('longitude').value = lng = result.K; // Set the longitude value
 
     // Set Marker Character and Color;
-    var marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|F7584C|000000"};
+    var marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|F7584C|000000"};
+
     // Marker Address Information Variable
-    var contentString = address + ' ' + postcode;
+    fullAddress = postcode;
+    if (address != "") {
+        addressTmp = address.replace(/,/g , "<br>");
+        fullAddress = addressTmp + ' ' + fullAddress;
+    }
+    var contentString = fullAddress;
 
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15, // increase the zoom
