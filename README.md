@@ -1,7 +1,6 @@
-# Google Map Manipulation
+## Google Map Manipulation
 
-###Home - Welcome to Google Map manipulation
-####Please click the suitable example as below:
-    - [Create Google Marker] (location-marker.php)
-    - [Google Multi Drop Pin Maps] (location-drop-pin-maps.php)
-
+There are two examples for google map manipulation:
+### Basic Configuration
+- [Google Map Marker](location-marker.php) shows the normal address finder and map marker.
+- [Google Drop-Pin Map](location-drop-pin-maps.php) shows the multiple list of locations markers on the single map.
