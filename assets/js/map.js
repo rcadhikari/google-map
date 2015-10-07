@@ -9,20 +9,26 @@
 var marker;
 var address;
 var postcode;
+var tmpLat = 28.2
+var tmpLng = 83.98166700000002;
+var marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|F7584C|000000"};
 
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
-        center: {lat: 28.2, lng: 83.98166700000002 }
+        //center: {lat: 28.2, lng: 83.98166700000002 }
+        center: {lat: tmpLat, lng: tmpLng}
     });
     var geocoder = new google.maps.Geocoder();
 
     // Initial pre-population the marker on the map
-    geocodeAddress(geocoder);
+    var pre_load = 1; // This is a pre-population of marker on the map status.
+    geocodeAddress(geocoder, pre_load);
 
     // Do the map work once
     document.getElementById('locate_on_map').addEventListener('click', function() {
-        geocodeAddress(geocoder);
+        pre_load = 0;
+        geocodeAddress(geocoder, pre_load);
     });
 }
 
@@ -30,7 +36,7 @@ function initMap() {
  * Function to manipulate the Google Map Locator
  * @param geocoder object This is a geocoder object
  */
-function geocodeAddress(geocoder) {
+function geocodeAddress(geocoder, pre_load) {
     address = document.getElementById('address').value;
     postcode = document.getElementById('postcode').value;
     var fullAddress = address + ' ' + postcode;
@@ -38,9 +44,11 @@ function geocodeAddress(geocoder) {
     geocoder.geocode({'address': fullAddress}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
             var result = results[0].geometry.location;
-            locateAddressMarker(result);
+            locateAddressMarker(result, pre_load);
         } else {
+            if (pre_load == false) {
             alert('Geocode was not successful for the following reason: ' + status);
+        }
         }
     });
 }
@@ -48,11 +56,18 @@ function geocodeAddress(geocoder) {
 /**
  * @param result This is the object return by google api after the passing the address via api param.
  */
-function locateAddressMarker(result)
+function locateAddressMarker(result, pre_load)
 {
+    // If older value exist, override the existing one;
+    if (pre_load == 1) {
+        //Google Parameter changed: Lat: G; Lng: K;
+        result.H = tmpLat;
+        result.L = tmpLng;
+    }
+
     // After searching the address, set the resulted latitude/longitude values into the text fields.
-    document.getElementById('latitude').value = lat = result.G; // Set the latitude value
-    document.getElementById('longitude').value = lng = result.K; // Set the longitude value
+    document.getElementById('latitude').value = lat = result.H; // Set the latitude value
+    document.getElementById('longitude').value = lng = result.L; // Set the longitude value
 
     // Set Marker Character and Color;
     var marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|F7584C|000000"};
@@ -104,5 +119,42 @@ function toggleBounce() {
 
         // Set the timeout for marker bouncing
         setTimeout(function(){ marker.setAnimation(null); }, 750);
+    }
+}
+
+
+/** TODO: The below functions is for multiple marker in the google map. */
+function LoadMultiAddressOnGoogleMap(markers) {
+    var mapOptions = {
+        //center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
+        center: {lat: tmpLat, lng: tmpLng},
+        //center: {lat: 53.282872, lng: -3.8294799999999896},
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+    //Create and open InfoWindow.
+    var infoWindow = new google.maps.InfoWindow();
+
+    for (var i = 0; i < markers.length; i++) {
+        var data = markers[i];
+        var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+
+        var marker = new google.maps.Marker({
+            map: map,
+            position: myLatlng,
+            //animation: google.maps.Animation.DROP,
+            icon: marker_icon
+        });
+
+        //Attach click event to the marker.
+        (function (marker, data) {
+            google.maps.event.addListener(marker, "click", function (e) {
+                //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                infoWindow.setContent("<div style = 'min-width:150px;max-width:250px;min-height:40px;color:#214D74'><b>" +  data.title + "</b><br/>" + data.description + "</div>");
+                infoWindow.open(map, marker);
+            });
+        })(marker, data);
     }
 }

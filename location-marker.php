@@ -5,7 +5,6 @@
  * @author RC Adhikari <http://rcadhikari.blogspot.co.uk>
  * Date: 25/08/2015 15:20
  */
-
 ?>
 <div class="container">
     <?php require_once 'header.php'; ?>
@@ -17,7 +16,7 @@
             </label>
         </div>
         <div class="controls">
-            <textarea id="address" name="address" value="" size="30" required="required">Pokhara Airport, Nagdhunga, Pokhara, Nepal</textarea>
+            <textarea id="address" name="address" value="" size="30" required="required" rows="5" cols="31">Pokhara Airport, Nagdhunga, Pokhara, Nepal</textarea>
         </div>
     </div>
     
