@@ -58,16 +58,23 @@ function geocodeAddress(geocoder, pre_load) {
  */
 function locateAddressMarker(result, pre_load)
 {
+    // Fetching the keys from result object;
+    var geo_keys = Object.keys(result);
+    var result_lat_key = geo_keys[0];
+    var result_lng_key = geo_keys[1];
+    // console.log(geo_keys);
+
     // If older value exist, override the existing one;
     if (pre_load == 1) {
         //Google Parameter changed: Lat: G; Lng: K;
-        result.H = tmpLat;
-        result.L = tmpLng;
+        result[result_lat_key] = tmpLat;
+        result[result_lng_key] = tmpLng;
     }
+    //console.log( 'pre_load: '+pre_load+' tmpLat1: ' + result[result_lat_key] + ' tmpLng1: '+ result[result_lng_key]);
 
     // After searching the address, set the resulted latitude/longitude values into the text fields.
-    document.getElementById('latitude').value = lat = result.H; // Set the latitude value
-    document.getElementById('longitude').value = lng = result.L; // Set the longitude value
+    document.getElementById('latitude').value = lat = result[result_lat_key]; // Set the latitude value
+    document.getElementById('longitude').value = lng = result[result_lng_key]; // Set the longitude value
 
     // Set Marker Character and Color;
     var marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|F7584C|000000"};
