@@ -148,6 +148,9 @@ function LoadMultiAddressOnGoogleMap(markers) {
         var data = markers[i];
         var myLatlng = new google.maps.LatLng(data.lat, data.lng);
 
+        var colortype = {green:"73C319", red:"F7584C"};
+        marker_icon = {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|" + colortype[data.type]+ "|000000"};
+
         var marker = new google.maps.Marker({
             map: map,
             position: myLatlng,
